@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>SQL Dump Parser</h1>
+    
+    <h2>Available SQL Dumps</h2>
+    <form action="{{ path('parser_parse') }}" method="post">
+        {% for dumpFile in dumpFiles %}
+            <div>
+                <input type="checkbox" name="dump_files[]" value="{{ dumpFile }}">
+                {{ dumpFile }}
+            </div>
+        {% endfor %}
+        <div><br>
+            <input type="radio" name="format" value="txt">
+            <label for="txt">TXT format</label><br>
+            <input type="radio" name="format" value="csv">
+            <label for="csv">CSV format</label><br>
+            <input type="radio" name="format" value="xml">
+            <label for="xml">XML format</label><br>
+        </div>
+        <button type="submit">Parse Selected</button>
+    </form>
+
+    <h2>Upload New Dump</h2>
+    <form action="{{ path('parser_upload') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="dump_file">
+        <button type="submit">Upload</button>
+    </form>
+    
+    
+{% endblock %}

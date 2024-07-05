@@ -1,0 +1,12 @@
+<h2>Parse Results</h2>
+    <h3>Individual Exports:</h3>
+    <ul>
+    {% set exports = app.session.get('export_files') %}
+    {% for export in app.request.query.get('exports') %}
+        <li><a href="{{ asset('exports/' ~ export) }}">{{ export }}</a></li>
+    {% endfor %}
+    </ul>
+    
+    <h3>Merged Export:</h3>
+    {% set format = app.session.get('merged_format') %}
+    <a href="{{ asset('exports/merged.' . format) }}">Download Merged</a>
