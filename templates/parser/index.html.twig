@@ -28,5 +28,17 @@
         <button type="submit">Upload</button>
     </form>
     
-    
+    <h2>Parse Results</h2>
+    <h3>Individual Exports:</h3>
+    <ul>
+    {% set exports = app.session.get('export_files') %}
+    {% for export in exports %}
+        <li><a href="{{ asset('exports/' ~ export) }}" download="{{ export }}">{{ export }}</a></li>
+    {% endfor %}
+    </ul>
+    <h3>Merged Export:</h3>
+    {% set format = app.session.get('merged_format') %}
+    {% set filename = 'merged.' ~ format %}
+    <a href="{{ asset('exports/' ~ filename) }}" download="{{ filename }}">Download Merged</a>
+
 {% endblock %}

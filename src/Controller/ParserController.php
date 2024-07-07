@@ -57,19 +57,23 @@ class ParserController extends AbstractController
 
         $selectedFormat = $request->request->get('format');
         $exportFiles = [];
+        $exportFileNames = [];
         foreach ($results as $fileName => $posts) {
             if ($selectedFormat == "csv") {
                 $exportFileName = $this->getParameter('kernel.project_dir') . '/public/exports/' . $fileName . '.csv';
                 $this->exportService->exportToCsv($posts, $exportFileName);
                 $exportFiles[] = $exportFileName;
+                $exportFileNames[] = $fileName . '.csv';
             } elseif ($selectedFormat == "xml") {
                 $exportFileName = $this->getParameter('kernel.project_dir') . '/public/exports/' . $fileName . '.xml';
                 $this->exportService->exportToXml($posts, $exportFileName);
                 $exportFiles[] = $exportFileName;
+                $exportFileNames[] = $fileName . '.xml';
             } elseif ($selectedFormat == "txt") {
                 $exportFileName = $this->getParameter('kernel.project_dir') . '/public/exports/' . $fileName . '.txt';
                 $this->exportService->exportTotxt($posts, $exportFileName);
                 $exportFiles[] = $exportFileName;
+                $exportFileNames[] = $fileName . '.txt';
             } 
         }
 
@@ -77,8 +81,7 @@ class ParserController extends AbstractController
         $this->exportService->mergeFiles($exportFiles, $mergedFile);
         
         $session = $request->getSession();
-        $session->set('export_files', $exportFiles);
-        $session->set('merged_file', $mergedFile);
+        $session->set('export_files', $exportFileNames);
         $session->set('merged_format', $selectedFormat);
 
         return $this->redirectToRoute('parser_index');
